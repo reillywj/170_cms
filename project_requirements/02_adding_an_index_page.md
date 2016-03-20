@@ -26,4 +26,5 @@ Instead of database system, we will have a filesystem instead. This is the path 
 1. Mostly spot on. I didn't state that I'd use the File class to get a list of documents. I used Dir.glob, but didn't like that implementation. Will refactor.
 
 ## Differences to Solution
-
+1. I used a very similar implementation. I did refactor toward the LS solution to use the method `File.basename(path)` instead of my `path.split('/')[-1]` to get the basename of the filename.
+2. I'm note sure why we set `root = File.expand_path(...)`. Until required, I'm going to leave this part out.
