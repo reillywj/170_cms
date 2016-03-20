@@ -14,11 +14,11 @@
 
 ## My Notes on Implementation
 
-1. 
+1. Interesting to find out that assert_includes creates two assertions, one to make sure that the thing being tested responds to :include? method and a second to see if the object is included in the Collection
 
 ## Additional Steps that LaunchSchool steps Implemented
 
-1. 
+1. Add `minitest` to `Gemfile`; `bundle install`
 
 ## Differences to Solution
 
