@@ -10,4 +10,11 @@
 2. Add GET '/' {"Getting started." } code to cms.rb file
 3. Test setup
 
+## My Notes on Implementation
+
+1. Only needed to add cms.rb file
+2. Make sure I have the sinatra gem (`gem list | grep sinatra`; otherwise `gem install sinantra`)
+3. Add require 'sinatra' to cms.rb file
+4. Add GET '/' {"Getting started."}
+
 ## Differences to Solution
