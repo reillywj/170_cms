@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sinatra/reloader'
+require 'erubis'
 
 get '/' do
-  'Getting started.'
+  @files = Dir.glob("data/*.txt").map {|file| file.split('/')[1]}
+  erb :index
 end
