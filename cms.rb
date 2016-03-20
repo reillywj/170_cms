@@ -20,7 +20,6 @@ get "/*.txt" do
     headers['Content-Type'] = 'text/plain'
     File.read("data/#{file}")
   else
-    status 404
     session[:error] = "#{file} does not exist."
     redirect '/'
   end
