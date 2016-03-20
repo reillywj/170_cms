@@ -22,3 +22,5 @@
 1. Add Gemfile, include dependencies for `sinatra` and `sinatra-contrib`
 
 ## Differences to Solution
+
+No major differences. It was good to include a Gemfile and the sintra-contrib gem, then `bundle install` to ensure gems included to run the app.
