@@ -19,11 +19,11 @@ Instead of database system, we will have a filesystem instead. This is the path 
 
 ## My Notes on Implementation
 
-1. 
+1. Nothing too out of the ordinary.
 
 ## Additional Steps that LaunchSchool steps Implemented
 
-1. 
+1. Mostly spot on. I didn't state that I'd use the File class to get a list of documents. I used Dir.glob, but didn't like that implementation. Will refactor.
 
 ## Differences to Solution
 
