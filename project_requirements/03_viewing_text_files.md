@@ -16,11 +16,10 @@
 
 ## My Notes on Implementation
 
-1. 
+1. Was able to implement most except for plain/text. I had to defer to solutions as I couldn't find anything in my search as I looked for HTML solutions instead of a Sinatra solution.
+2. Ended up not needing a content view, this was removed.
 
 ## Additional Steps that LaunchSchool steps Implemented
 
-1. 
-
 ## Differences to Solution
-
+1. Still using `root`. Not sure if needed yet or not.
