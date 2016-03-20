@@ -26,4 +26,17 @@ class CMSTest < Minitest::Test
     assert_equal 'text/plain', last_response['Content-Type']
     assert_includes last_response.body, 'This is a content management system'
   end
+
+  def test_nonexistent_document
+    get '/nonexistent.txt'
+    error_message = 'nonexistent.txt does not exist.'
+    assert_equal 302, last_response.status
+
+    follow_redirect!
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, error_message
+
+    get '/'
+    refute_includes last_response.body, error_message
+  end
 end
