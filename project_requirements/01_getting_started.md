@@ -17,4 +17,8 @@
 3. Add require 'sinatra' to cms.rb file
 4. Add GET '/' {"Getting started."}
 
+## Additional Steps that LaunchSchool steps Implemented
+
+1. Add Gemfile, include dependencies for `sinatra` and `sinatra-contrib`
+
 ## Differences to Solution
