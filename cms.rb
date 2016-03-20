@@ -11,19 +11,36 @@ configure do
   set :session_secret, 'secret'
 end
 
+def file_basename(extension)
+  params['splat'].first + extension
+end
+
+def show_content(extension)
+  file = file_basename extension
+
+  if File.file?("data/#{file}")
+    yield(file) if block_given?
+  else
+    session[:error] = "#{file} does not exist."
+    redirect '/'
+  end
+end
+
 get '/' do
-  @files = Dir.glob("data/*.txt").map {|path| File.basename(path)}
+  @files = Dir.glob("data/*").map {|path| File.basename(path)}
   erb :index
 end
 
 get "/*.txt" do
-  file = params['splat'].first + ".txt"
-
-  if File.file?("data/#{file}")
+  show_content('.txt') do |file|
     headers['Content-Type'] = 'text/plain'
     File.read("data/#{file}")
-  else
-    session[:error] = "#{file} does not exist."
-    redirect '/'
+  end
+end
+
+get '/*.md' do
+  show_content('.md') do |file|
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+    markdown.render File.read("data/#{file}")
   end
 end
