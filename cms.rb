@@ -1,7 +1,10 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'erubis'
+require 'redcarpet'
+
 require 'pry'
+
 configure do
   enable :sessions
   # give 'secret'
