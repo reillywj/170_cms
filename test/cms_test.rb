@@ -21,6 +21,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'about.md'
     assert_includes last_response.body, 'changes.md'
     assert_includes last_response.body, 'history.md'
+    assert_includes last_response.body, 'Edit'
   end
 
   def test_file
@@ -48,5 +49,13 @@ class CMSTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_includes last_response['Content-Type'], 'text/html'
     assert_includes last_response.body, '<h2>Ruby</h2>'
+  end
+
+  def test_edit_file
+    get '/about.md'
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'textarea'
+    assert_includes last_response.body, 'Edit content of changes.txt:'
+    assert_includes last_response.body, 'Save Changes'
   end
 end
