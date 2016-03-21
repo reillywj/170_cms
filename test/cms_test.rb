@@ -39,4 +39,11 @@ class CMSTest < Minitest::Test
     get '/'
     refute_includes last_response.body, error_message
   end
+
+  def test_markdown_file
+    get '/about.md'
+    assert_equal 200, last_response.status
+    assert_includes last_response['Content-Type'], 'text/html'
+    assert_includes last_response.body, '<h2>Ruby</h2>'
+  end
 end
