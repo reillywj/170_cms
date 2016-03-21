@@ -15,7 +15,12 @@ def file_basename(extension)
   params['splat'].first + extension
 end
 
-def show_content(extension)
+def render_markdown(text)
+  markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+  markdown.render text
+end
+
+def render_content(extension)
   file = file_basename extension
 
   if File.file?("data/#{file}")
@@ -32,15 +37,14 @@ get '/' do
 end
 
 get "/*.txt" do
-  show_content('.txt') do |file|
+  render_content('.txt') do |file|
     headers['Content-Type'] = 'text/plain'
     File.read("data/#{file}")
   end
 end
 
 get '/*.md' do
-  show_content('.md') do |file|
-    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-    markdown.render File.read("data/#{file}")
+  render_content('.md') do |file|
+    render_markdown File.read("data/#{file}")
   end
 end
