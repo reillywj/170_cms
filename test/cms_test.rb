@@ -18,6 +18,9 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'about.txt'
     assert_includes last_response.body, 'changes.txt'
     assert_includes last_response.body, 'history.txt'
+    assert_includes last_response.body, 'about.md'
+    assert_includes last_response.body, 'changes.md'
+    assert_includes last_response.body, 'history.md'
   end
 
   def test_file
