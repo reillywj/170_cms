@@ -4,3 +4,11 @@ Edit content of <%= @file %>:
   <br/>
   <input type="submit" value="Save Changes"/>
 </form>
+
+<form action="/<%= @file %>" method="post">
+  <label for="content">Edit content of <%= @file%>:</label>
+  <div>
+    <textarea name="content" id="content" rows="20" cols="100"><%= @content %></textarea>
+  </div>
+  <button type="submit">Save Changes</button>
+</form>
