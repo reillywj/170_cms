@@ -1,12 +1,17 @@
+<% if session[:success] %>
+  <p><%= session.delete :success %></p>
+<% end %>
+
 <% if session[:error] %>
   <p><%= session.delete :error %></p>
 <% end %>
 
-<table>
+<h3>Using a Table</h3>
+<table border="1">
   <thead>
     <tr>
-      <th>Filename</th>
-      <th></th>
+      <th width="150">Filename</th>
+      <th width = "40"></th>
     </tr>
   </thead>
   <tbody>
@@ -22,3 +27,11 @@
     <% end %>
   </tbody>
 </table>
+
+<hr>
+<h3>Using Unordered List</h3>
+<ul>
+  <% @files.each do |file| %>
+    <li><a href="/<%= file %>"><%= file %></a> :: <a href="/<%= file %>/edit">Edit</a></li>
+  <% end %>
+</ul>

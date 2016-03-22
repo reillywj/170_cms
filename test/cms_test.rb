@@ -52,10 +52,28 @@ class CMSTest < Minitest::Test
   end
 
   def test_edit_file
-    get '/about.md'
+    new_content = "# History\n\nReplaced text."
+    status_update = 'history.md was updated'
+
+    get '/history.md/edit'
     assert_equal 200, last_response.status
-    assert_includes last_response.body, 'textarea'
-    assert_includes last_response.body, 'Edit content of changes.txt:'
+    assert_includes last_response.body, '<form action'
+    assert_includes last_response.body, '<textarea'
+    assert_includes last_response.body, 'Edit content of history.md:'
+    assert_includes last_response.body, "# History"
     assert_includes last_response.body, 'Save Changes'
+
+    post '/history.md', params={'content' => new_content}
+    assert_equal 302, last_response.status
+
+    follow_redirect!
+    assert_includes last_response.body, status_update
+
+    get '/'
+    refute_includes last_response.body, status_update
+
+    get '/history.md'
+    assert_includes last_response.body, 'Replaced text.'
+
   end
 end

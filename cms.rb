@@ -48,3 +48,35 @@ get '/*.md' do
     render_markdown File.read("data/#{file}")
   end
 end
+
+get '/*/edit' do
+  @file = params['splat'].first
+  @content = File.read("data/#{@file}")
+  erb :edit
+end
+
+post '/*' do
+  @file = params['splat'].first
+  @content = params['content']
+  File.write("data/#{@file}", @content)
+  session[:success] = "#{@file} was updated."
+  redirect '/'
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
