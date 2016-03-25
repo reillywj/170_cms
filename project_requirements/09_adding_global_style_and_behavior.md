@@ -14,13 +14,12 @@
 3. Text files shouldn't be hampered by any changes here.
 4. Set typeface to sans-serif with some styling.
 
-## My Notes on Implementation
-
-1. 
-
 ## Additional Steps that LaunchSchool steps Implemented
 
-1. 
+1. More specifics:
+  - I created main.css under a public/stylesheets directory instead of a cms.css under a public directory
 
 ## Differences to Solution
-
+- I had already accommodated for the differences between .md and .txt presentation
+- I had not added padding; to be consistent I added in the padding.
+- I removed the tabular format to be consistent with the LS solution.

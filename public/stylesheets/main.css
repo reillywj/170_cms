@@ -1,7 +1,9 @@
 #message {
   background-color: yellow;
+  padding: 1em;
 }
 
 body {
   font-family: sans-serif;
+  padding: 10px;
 }
