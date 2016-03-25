@@ -1,9 +1,5 @@
-<% if session[:success] %>
-  <p><%= session.delete :success %></p>
-<% end %>
-
-<% if session[:error] %>
-  <p><%= session.delete :error %></p>
+<% if session[:message] %>
+  <p id="message"><%= session.delete :message %></p>
 <% end %>
 
 <h3>Using a Table</h3>

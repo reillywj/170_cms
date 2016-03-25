@@ -32,7 +32,7 @@ def render_content(file_path)
   if File.file? file_path
     yield(file_path) if block_given?
   else
-    session[:error] = "#{File.basename file_path} does not exist."
+    session[:message] = "#{File.basename file_path} does not exist."
     redirect '/'
   end
 end
@@ -76,7 +76,7 @@ post '/:filename' do
   @content = params[:content]
 
   File.write(file_path, @content)
-  session[:success] = "#{@file} was updated."
+  session[:message] = "#{@file} was updated."
   redirect '/'
 end
 
