@@ -41,3 +41,10 @@
 
 1. I did not know about status 422. So I added status 422 upon empty new file submission. Otherwise I covered everything else.
 
+
+## Additional Question
+
+1. What will happen if a user creates a document without a file extension? How could this be handled?
+  - The way I have my routes setup, Sinatra can't find the route and a routing error will be thrown if the file extension is not a .txt or .md
+    - I need to either add a route for any other file extension; or
+    - I need to validate extension on newly created file has a .txt or .md at the end.
