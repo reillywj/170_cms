@@ -11,13 +11,8 @@
 2. Create a POST /:filename/delete route
 3. Make sure message is posted stating file was indeed deleted.
 
-## My Notes on Implementation
-
-1. 
-
-## Additional Steps that LaunchSchool steps Implemented
-
-1. 
-
 ## Differences to Solution
 
+1. Test was spot on.
+2. Solution adds a form button instead of a simple a-tag/element. I will be switching to this implementation method.
+3. Need CSS to put form inline.
