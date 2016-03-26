@@ -36,6 +36,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'changes.txt'
     assert_includes last_response.body, 'about.md'
     assert_includes last_response.body, 'Edit'
+    assert_includes last_response.body, 'New Document'
   end
 
   def test_file
