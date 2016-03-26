@@ -35,11 +35,9 @@
 
 ## My Notes on Implementation
 
-1. 
-
-## Additional Steps that LaunchSchool steps Implemented
-
-1. 
+1. I had initially included a validation to check if file already exists. I removed to align with the LS solution.
 
 ## Differences to Solution
+
+1. I did not know about status 422. So I added status 422 upon empty new file submission. Otherwise I covered everything else.
 

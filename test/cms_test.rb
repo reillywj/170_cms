@@ -127,16 +127,8 @@ class CMSTest < Minitest::Test
   end
 
   def test_invalid_new
-    existing_file = 'about.txt'
-    create_document existing_file, 'About'
-
-    post '/new', params={'filename' => existing_file}
-    assert_equal 200, last_response.status
-    assert_includes last_response.body, "#{existing_file} already exists."
-    assert_includes last_response.body, "value=\"#{existing_file}\""
-
     post '/new', params={'filename' => ""}
-    assert_equal 200, last_response.status
+    assert_equal 422, last_response.status
     assert_includes last_response.body, "A name is required."
   end
 end

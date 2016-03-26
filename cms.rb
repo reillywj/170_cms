@@ -44,7 +44,7 @@ end
 def invalid_filename
   @file = params[:filename]
 
-  @file.empty? || file_exists?(@file)
+  @file.empty?
 end
 
 def all_documents
@@ -85,13 +85,14 @@ get '/:filename/edit' do
 end
 
 post '/new' do
-  if invalid_filename
-    session[:message] = @file.empty? ? "A name is required." : "#{@file} already exists."
+  @file = params[:filename]
+  if @file.empty?
+    session[:message] = "A name is required."
+    status 422
     erb :new
   else
     file_path = File.join(data_path, @file)
     File.new(file_path, 'a+')
-    
     session[:message] = "#{@file} was created."
     redirect '/'
   end
