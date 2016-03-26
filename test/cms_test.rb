@@ -106,10 +106,37 @@ class CMSTest < Minitest::Test
   end
 
   def test_new
+    filename = 'about.txt'
+
     get '/new'
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Add a new document:'
     assert_includes last_response.body, 'Create Document'
     assert_includes last_response.body, '</form>'
+
+    post '/new', params={ 'filename' => filename }
+    assert_equal 302, last_response.status
+
+    follow_redirect!
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "#{filename} was created."
+
+    get '/'
+    refute_includes last_response.body, "#{filename} was updated."
+    assert_includes last_response.body, filename
+  end
+
+  def test_invalid_new
+    existing_file = 'about.txt'
+    create_document existing_file, 'About'
+
+    post '/new', params={'filename' => existing_file}
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "#{existing_file} already exists."
+    assert_includes last_response.body, "value=\"#{existing_file}\""
+
+    post '/new', params={'filename' => ""}
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "A name is required."
   end
 end

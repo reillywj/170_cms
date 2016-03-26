@@ -1,6 +1,10 @@
+<% if session[:message] %>
+  <p id="message"><%= session.delete :message %></p>
+<% end %>
+
 <form action='/new' method='post'>
-  <label>Add a new document:</label>
+  <label for='filename'>Add a new document:</label>
   <br>
-  <input type='text'>
+  <input type='text' name='filename' id='filename' value="<%= @file || ''%>">
   <button type="submit">Create Document</button>
 </form>

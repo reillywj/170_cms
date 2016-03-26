@@ -37,9 +37,23 @@ def render_content(file_path)
   end
 end
 
+def file_exists?(file_basename)
+  all_documents.include? file_basename
+end
+
+def invalid_filename
+  @file = params[:filename]
+
+  @file.empty? || file_exists?(@file)
+end
+
+def all_documents
+  pattern = File.join(data_path, '*')
+  @files = Dir.glob(pattern).map { |path| File.basename(path) }
+end
+
 get '/' do
-  pattern = File.join(data_path, "*")
-  @files = Dir.glob(pattern).map {|path| File.basename(path)}
+  all_documents
   erb :index
 end
 
@@ -67,6 +81,19 @@ get '/:filename/edit' do
   render_content(file_path) do |file_path|
     @content = File.read(file_path)
     erb :edit
+  end
+end
+
+post '/new' do
+  if invalid_filename
+    session[:message] = @file.empty? ? "A name is required." : "#{@file} already exists."
+    erb :new
+  else
+    file_path = File.join(data_path, @file)
+    File.new(file_path, 'a+')
+    
+    session[:message] = "#{@file} was created."
+    redirect '/'
   end
 end
 
