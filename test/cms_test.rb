@@ -36,6 +36,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'changes.txt'
     assert_includes last_response.body, 'about.md'
     assert_includes last_response.body, 'Edit'
+    assert_includes last_response.body, 'Delete'
     assert_includes last_response.body, 'New Document'
   end
 
@@ -131,4 +132,37 @@ class CMSTest < Minitest::Test
     assert_equal 422, last_response.status
     assert_includes last_response.body, "A name is required."
   end
+
+  def test_delete_document
+    filename = 'about.txt'
+    create_document filename, 'Some Content'
+
+    get '/'
+    assert_includes last_response.body, filename
+
+    post "/#{filename}/delete", params={'filename' => filename}
+    assert_equal 302, last_response.status
+
+    follow_redirect!
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "#{filename} was deleted."
+
+    get '/'
+    refute_includes last_response.body, filename
+
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

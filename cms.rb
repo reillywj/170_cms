@@ -112,7 +112,13 @@ get '/new' do
   erb :new
 end
 
-
+post '/:filename/delete' do
+  file = params[:filename]
+  file_path = File.join(data_path, file)
+  File.delete(file_path)
+  session[:message] = "#{file} was deleted."
+  redirect '/'
+end
 
 
 
