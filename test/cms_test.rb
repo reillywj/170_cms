@@ -104,4 +104,12 @@ class CMSTest < Minitest::Test
     get '/history.md'
     assert_includes last_response.body, 'Replaced text.'
   end
+
+  def test_new
+    get '/new'
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Add a new document:'
+    assert_includes last_response.body, 'Create Document'
+    assert_includes last_response.body, '</form>'
+  end
 end

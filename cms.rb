@@ -80,6 +80,10 @@ post '/:filename' do
   redirect '/'
 end
 
+get '/new' do
+  erb :new
+end
+
 
 
 
