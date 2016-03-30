@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'erubis'
 require 'redcarpet'
+require 'yaml'
 
 require 'pry'
 
@@ -57,12 +58,22 @@ def all_documents
   @files = Dir.glob(pattern).map { |path| File.basename(path) }
 end
 
+def administrators
+  path =  if ENV['RACK_ENV'] == 'test'
+            'test/users.yml'
+          else
+            'users.yml'
+          end
+  YAML.load File.open(path)
+end
+
 def valid_admin_credentials?(username, password)
-  username == 'username' && password == 'secret'
+  users = administrators
+  users.has_key?(username) && users[username] == password
 end
 
 def admin?
-  session[:signedin] == 'admin'
+  session[:signedin]
 end
 
 def must_be_signed_in
@@ -89,7 +100,7 @@ post '/signin' do
   @username = params[:username]
   password = params[:password]
   if valid_admin_credentials?(@username, password)
-    session[:signedin] = 'admin'
+    session[:signedin] = @username
     session[:message] = 'Welcome!'
     redirect '/'
   else

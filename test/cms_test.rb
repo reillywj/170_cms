@@ -14,10 +14,14 @@ class CMSTest < Minitest::Test
 
   def setup
     FileUtils.mkdir_p(data_path)
+    users = { 'username' => 'secret' }
+    FileUtils.touch('test/users.yml')
+    File.open('test/users.yml', 'w') { |f| f.write users.to_yaml }
   end
 
   def teardown
     FileUtils.rm_rf(data_path)
+    FileUtils.rm('test/users.yml')
   end
 
   def create_document(name, content = '')
@@ -198,7 +202,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Signed in as admin.'
     assert_includes last_response.body, 'Sign Out'
     refute_includes last_response.body, 'Sign In'
-    assert_equal 'admin', session[:signedin]
+    assert_equal 'username', session[:signedin]
 
     get '/'
     refute_includes last_response.body, 'Welcome!'
