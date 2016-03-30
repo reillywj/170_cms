@@ -20,7 +20,7 @@
 
 <% if session[:signedin] %>
   <form method="get" action="/signout">
-    <label><em>Signed in as admin.</em></label>
+    <label><em>Signed in as <%= session[:signedin] %>.</em></label>
     <button type="submit">Sign Out</button>
   </form>
 <% else %>

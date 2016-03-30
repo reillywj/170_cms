@@ -52,7 +52,7 @@ def all_documents
   @files = Dir.glob(pattern).map { |path| File.basename(path) }
 end
 
-def valid_credentials(username, password)
+def valid_admin_credentials(username, password)
   username == "username" && password == "secret"
 end
 
@@ -72,8 +72,8 @@ end
 post '/signin' do
   @username = params[:username]
   password = params[:password]
-  if valid_credentials(@username, password)
-    session[:signedin] = true
+  if valid_admin_credentials(@username, password)
+    session[:signedin] = 'admin'
     session[:message] = "Welcome!"
     redirect '/'
   else
