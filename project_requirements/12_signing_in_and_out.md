@@ -29,7 +29,13 @@
 
 ## Additional Steps that LaunchSchool steps Implemented
 
-1. 
+1. Pretty much spot on
 
 ## Differences to Solution
 
+1. On tests, I combined signin and signout to limit duplication
+  - Otherwise the similar.
+  - LS tests test for form input/submit while I tested for the text of the labels.
+2. I use a form buttom for Sign In instead of an link
+3. I use different routing instead of `/users/:signin_or_out`
+4. I did not do styling via CSS, instead I used an em tag to emphasize the text.
