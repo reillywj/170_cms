@@ -20,8 +20,8 @@ class CMSTest < Minitest::Test
     FileUtils.rm_rf(data_path)
   end
 
-  def create_document(name, content = "")
-    File.open(File.join(data_path, name), "w") do |file|
+  def create_document(name, content = '')
+    File.open(File.join(data_path, name), 'w') do |file|
       file.write(content)
     end
   end
@@ -36,7 +36,7 @@ class CMSTest < Minitest::Test
 
     get '/'
     assert_equal 200, last_response.status
-    assert_equal "text/html;charset=utf-8", last_response["Content-Type"]
+    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes last_response.body, 'changes.txt'
     assert_includes last_response.body, 'about.md'
     assert_includes last_response.body, 'Edit'
@@ -78,7 +78,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_markdown_file
-    create_document 'about.md', "## Ruby"
+    create_document 'about.md', '## Ruby'
     get '/about.md'
     assert_equal 200, last_response.status
     assert_includes last_response['Content-Type'], 'text/html'
@@ -96,10 +96,10 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, '<form action'
     assert_includes last_response.body, '<textarea'
     assert_includes last_response.body, 'Edit content of history.md:'
-    assert_includes last_response.body, "# History"
+    assert_includes last_response.body, '# History'
     assert_includes last_response.body, 'Save Changes'
 
-    post '/history.md', params={'content' => new_content}
+    post '/history.md', 'content' => new_content
     assert_equal 302, last_response.status
     assert_equal status_update, session[:message]
 
@@ -122,7 +122,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Create Document'
     assert_includes last_response.body, '</form>'
 
-    post '/new', params={ 'filename' => filename }
+    post '/new', 'filename' => filename
     assert_equal 302, last_response.status
     assert_equal "#{filename} was created.", session[:message]
 
@@ -136,9 +136,9 @@ class CMSTest < Minitest::Test
   end
 
   def test_invalid_new
-    post '/new', params={'filename' => ""}
+    post '/new', 'filename' => ''
     assert_equal 422, last_response.status
-    assert_includes last_response.body, "A name is required."
+    assert_includes last_response.body, 'A name is required.'
   end
 
   def test_delete_document
@@ -148,7 +148,7 @@ class CMSTest < Minitest::Test
     get '/'
     assert_includes last_response.body, filename
 
-    post "/#{filename}/delete", params={'filename' => filename}
+    post "/#{filename}/delete", 'filename' => filename
     assert_equal 302, last_response.status
     assert_equal "#{filename} was deleted.", session[:message]
 
@@ -166,7 +166,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Username:'
     assert_includes last_response.body, 'Password:'
 
-    post '/signin', params = { 'username' => 'username', 'password' => 'secret' }
+    post '/signin', 'username' => 'username', 'password' => 'secret'
     assert_equal 302, last_response.status
     assert_equal 'Welcome!', session[:message]
 
@@ -193,25 +193,11 @@ class CMSTest < Minitest::Test
   end
 
   def test_invalid_credentials
-    invalid_name = "invalid1234"
-    post '/signin', params = { 'username' => invalid_name, 'password' => 'secret' }
+    invalid_name = 'invalid1234'
+    post '/signin', 'username' => invalid_name, 'password' => 'secret'
     assert_equal 401, last_response.status
     assert_includes last_response.body, 'Invalid Credentials.'
     assert_includes last_response.body, invalid_name
     assert_equal nil, session[:signedin]
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
