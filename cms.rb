@@ -12,7 +12,7 @@ configure do
 end
 
 def data_path
-  if ENV["RACK_ENV"] == 'test'
+  if ENV['RACK_ENV'] == 'test'
     File.expand_path('../test/data', __FILE__)
   else
     File.expand_path('../data', __FILE__)
@@ -53,7 +53,7 @@ def all_documents
 end
 
 def valid_admin_credentials?(username, password)
-  username == "username" && password == "secret"
+  username == 'username' && password == 'secret'
 end
 
 get '/' do
@@ -74,10 +74,10 @@ post '/signin' do
   password = params[:password]
   if valid_admin_credentials?(@username, password)
     session[:signedin] = 'admin'
-    session[:message] = "Welcome!"
+    session[:message] = 'Welcome!'
     redirect '/'
   else
-    session[:message] = "Invalid Credentials."
+    session[:message] = 'Invalid Credentials.'
     status 401
     erb :signin
   end
@@ -89,20 +89,20 @@ get '/signout' do
   redirect '/'
 end
 
-get "/*.txt" do
+get '/*.txt' do
   file_path = File.join(data_path, params['splat'].first + '.txt')
 
-  render_content(file_path) do |file_path|
+  render_content(file_path) do |fp|
     headers['Content-Type'] = 'text/plain'
-    File.read(file_path)
+    File.read(fp)
   end
 end
 
 get '/*.md' do
   file_path = File.join(data_path, params['splat'].first + '.md')
 
-  render_content(file_path) do |file_path|
-    render_markdown File.read(file_path)
+  render_content(file_path) do |fp|
+    render_markdown File.read(fp)
   end
 end
 
@@ -110,8 +110,8 @@ get '/:filename/edit' do
   @file = params[:filename]
   file_path = File.join(data_path, @file)
 
-  render_content(file_path) do |file_path|
-    @content = File.read(file_path)
+  render_content(file_path) do |fp|
+    @content = File.read(fp)
     erb :edit
   end
 end
@@ -119,7 +119,7 @@ end
 post '/new' do
   @file = params[:filename]
   if @file.empty?
-    session[:message] = "A name is required."
+    session[:message] = 'A name is required.'
     status 422
     erb :new
   else
@@ -151,19 +151,3 @@ post '/:filename/delete' do
   session[:message] = "#{file} was deleted."
   redirect '/'
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
