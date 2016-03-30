@@ -59,6 +59,7 @@ class CMSTest < Minitest::Test
 
     error_message = 'nonexistent.txt does not exist.'
     assert_equal 302, last_response.status
+    assert_equal error_message, session[:message]
 
     follow_redirect!
     assert_equal 200, last_response.status
@@ -73,7 +74,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_nonexistent_document_edit
-    nonexistent_tests {get '/nonexistent.txt/edit'}
+    nonexistent_tests { get '/nonexistent.txt/edit' }
   end
 
   def test_markdown_file
@@ -88,7 +89,7 @@ class CMSTest < Minitest::Test
     create_document 'history.md', '# History'
 
     new_content = "# History\n\nReplaced text."
-    status_update = 'history.md was updated'
+    status_update = 'history.md was updated.'
 
     get '/history.md/edit'
     assert_equal 200, last_response.status
@@ -100,6 +101,7 @@ class CMSTest < Minitest::Test
 
     post '/history.md', params={'content' => new_content}
     assert_equal 302, last_response.status
+    assert_equal status_update, session[:message]
 
     follow_redirect!
     assert_includes last_response.body, status_update
@@ -122,6 +124,7 @@ class CMSTest < Minitest::Test
 
     post '/new', params={ 'filename' => filename }
     assert_equal 302, last_response.status
+    assert_equal "#{filename} was created.", session[:message]
 
     follow_redirect!
     assert_equal 200, last_response.status
@@ -147,6 +150,7 @@ class CMSTest < Minitest::Test
 
     post "/#{filename}/delete", params={'filename' => filename}
     assert_equal 302, last_response.status
+    assert_equal "#{filename} was deleted.", session[:message]
 
     follow_redirect!
     assert_equal 200, last_response.status
@@ -164,6 +168,7 @@ class CMSTest < Minitest::Test
 
     post '/signin', params = { 'username' => 'username', 'password' => 'secret' }
     assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
 
     follow_redirect!
     assert_equal 200, last_response.status
@@ -178,6 +183,7 @@ class CMSTest < Minitest::Test
 
     get '/signout'
     assert_equal 302, last_response.status
+    assert_equal 'You have been signed out.', session[:message]
     follow_redirect!
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Sign In'
