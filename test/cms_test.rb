@@ -30,6 +30,18 @@ class CMSTest < Minitest::Test
     last_request.env['rack.session']
   end
 
+  def must_be_signed_in
+    'You must be signed in to do that.'
+  end
+
+  def admin_session
+    { 'rack.session' => { username: 'admin'} }
+  end
+
+  def sign_in
+    post '/signin', 'username' => 'username', 'password' => 'secret'
+  end
+
   def test_index
     create_document 'about.md'
     create_document 'changes.txt'
@@ -74,6 +86,8 @@ class CMSTest < Minitest::Test
   end
 
   def test_nonexistent_document_edit
+    sign_in
+
     nonexistent_tests { get '/nonexistent.txt/edit' }
   end
 
@@ -86,6 +100,8 @@ class CMSTest < Minitest::Test
   end
 
   def test_edit_file
+    sign_in
+
     create_document 'history.md', '# History'
 
     new_content = "# History\n\nReplaced text."
@@ -114,6 +130,8 @@ class CMSTest < Minitest::Test
   end
 
   def test_new
+    sign_in
+
     filename = 'about.txt'
 
     get '/new'
@@ -136,12 +154,16 @@ class CMSTest < Minitest::Test
   end
 
   def test_invalid_new
+    sign_in
+
     post '/new', 'filename' => ''
     assert_equal 422, last_response.status
     assert_includes last_response.body, 'A name is required.'
   end
 
   def test_delete_document
+    sign_in
+
     filename = 'about.txt'
     create_document filename, 'Some Content'
 
@@ -166,7 +188,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Username:'
     assert_includes last_response.body, 'Password:'
 
-    post '/signin', 'username' => 'username', 'password' => 'secret'
+    sign_in
     assert_equal 302, last_response.status
     assert_equal 'Welcome!', session[:message]
 
@@ -200,4 +222,65 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, invalid_name
     assert_equal nil, session[:signedin]
   end
+
+  def restricted_with_document(&http_request)
+    filename = 'about.txt'
+    create_document filename, 'Some Content'
+
+    http_request.call
+    assert_equal must_be_signed_in, session[:message]
+    assert_equal  302, last_response.status
+
+    follow_redirect!
+    assert_includes last_response.body, must_be_signed_in
+  end
+
+  def test_restricted_edit_document
+    restricted_with_document do
+      get "/about.txt/edit"
+    end
+  end
+
+  def test_restricted_submit_changes_to_document
+    restricted_with_document do
+      post "/about.txt", 'content' => 'Some new content.'
+    end
+  end
+
+  def test_restricted_new_document
+    restricted_with_document do
+      get '/new'
+    end
+  end
+
+  def test_restricted_submit_new_document
+    restricted_with_document do
+      post '/new', 'filename' => 'history.txt'
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

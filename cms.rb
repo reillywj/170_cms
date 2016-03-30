@@ -56,6 +56,17 @@ def valid_admin_credentials?(username, password)
   username == 'username' && password == 'secret'
 end
 
+def admin?
+  session[:signedin] == 'admin'
+end
+
+def must_be_signed_in
+  unless admin?
+    session[:message] = 'You must be signed in to do that.'
+    redirect '/'
+  end
+end
+
 get '/' do
   all_documents
   erb :index
@@ -107,6 +118,8 @@ get '/*.md' do
 end
 
 get '/:filename/edit' do
+  must_be_signed_in
+
   @file = params[:filename]
   file_path = File.join(data_path, @file)
 
@@ -116,7 +129,15 @@ get '/:filename/edit' do
   end
 end
 
+get '/new' do
+  must_be_signed_in
+
+  erb :new
+end
+
 post '/new' do
+  must_be_signed_in
+
   @file = params[:filename]
   if @file.empty?
     session[:message] = 'A name is required.'
@@ -131,6 +152,8 @@ post '/new' do
 end
 
 post '/:filename' do
+  must_be_signed_in
+
   @file = params[:filename]
   file_path = File.join(data_path, @file)
   @content = params[:content]
@@ -140,11 +163,9 @@ post '/:filename' do
   redirect '/'
 end
 
-get '/new' do
-  erb :new
-end
-
 post '/:filename/delete' do
+  must_be_signed_in
+  
   file = params[:filename]
   file_path = File.join(data_path, file)
   File.delete(file_path)
