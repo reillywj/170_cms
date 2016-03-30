@@ -13,13 +13,7 @@
 1. Update tests to ensure signed in to do certain things
 2. Ensure redirected and message shown for the actions listed
 
-## My Notes on Implementation
-
-1. 
-
-## Additional Steps that LaunchSchool steps Implemented
-
-1. 
 
 ## Differences to Solution
-
+- Had different naming conventions: must_be_signed_in versus require_signed_in_user
+  - Otherwise setup was the same

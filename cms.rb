@@ -41,10 +41,15 @@ def file_exists?(file_basename)
   all_documents.include? file_basename
 end
 
-def invalid_filename
-  @file = params[:filename]
+def invalid_filenames
+  arr = []
+  arr << 'new'
+  arr << 'signin'
+  arr << 'signout'
+end
 
-  @file.empty?
+def invalid_filename?(file)
+  invalid_filenames.include? file
 end
 
 def all_documents
@@ -141,14 +146,17 @@ post '/new' do
   @file = params[:filename]
   if @file.empty?
     session[:message] = 'A name is required.'
-    status 422
-    erb :new
+  elsif invalid_filename?(@file)
+    session[:message] = "'#{@file}' is an invalid filename."
   else
     file_path = File.join(data_path, @file)
     File.new(file_path, 'a+')
     session[:message] = "#{@file} was created."
     redirect '/'
   end
+
+  status 422
+  erb :new
 end
 
 post '/:filename' do
@@ -165,7 +173,7 @@ end
 
 post '/:filename/delete' do
   must_be_signed_in
-  
+
   file = params[:filename]
   file_path = File.join(data_path, file)
   File.delete(file_path)
