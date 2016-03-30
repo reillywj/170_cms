@@ -78,12 +78,14 @@ post '/signin' do
     redirect '/'
   else
     session[:message] = "Invalid Credentials."
+    status 401
     erb :signin
   end
 end
 
 get '/signout' do
   session.delete :signedin
+  session[:message] = 'You have been signed out.'
   redirect '/'
 end
 

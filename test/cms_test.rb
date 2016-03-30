@@ -38,6 +38,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Edit'
     assert_includes last_response.body, 'Delete'
     assert_includes last_response.body, 'New Document'
+    assert_includes last_response.body, 'Sign In'
   end
 
   def test_file
@@ -149,7 +150,43 @@ class CMSTest < Minitest::Test
 
     get '/'
     refute_includes last_response.body, filename
+  end
 
+  def test_sigin_and_signout
+    get '/signin'
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Username:'
+    assert_includes last_response.body, 'Password:'
+
+    post '/signin', params = { 'username' => 'username', 'password' => 'secret' }
+    assert_equal 302, last_response.status
+
+    follow_redirect!
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Welcome!'
+    assert_includes last_response.body, 'Signed in as admin.'
+    assert_includes last_response.body, 'Sign Out'
+    refute_includes last_response.body, 'Sign In'
+
+    get '/'
+    refute_includes last_response.body, 'Welcome!'
+
+    get '/signout'
+    assert_equal 302, last_response.status
+    follow_redirect!
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Sign In'
+    refute_includes last_response.body, 'Sign Out'
+    assert_includes last_response.body, 'You have been signed out.'
+
+  end
+
+  def test_invalid_credentials
+    invalid_name = "invalid1234"
+    post '/signin', params = { 'username' => invalid_name, 'password' => 'secret' }
+    assert_equal 401, last_response.status
+    assert_includes last_response.body, 'Invalid Credentials.'
+    assert_includes last_response.body, invalid_name
   end
 end
 
