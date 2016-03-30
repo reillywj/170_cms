@@ -26,6 +26,10 @@ class CMSTest < Minitest::Test
     end
   end
 
+  def session
+    last_request.env['rack.session']
+  end
+
   def test_index
     create_document 'about.md'
     create_document 'changes.txt'
@@ -167,6 +171,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Signed in as admin.'
     assert_includes last_response.body, 'Sign Out'
     refute_includes last_response.body, 'Sign In'
+    assert_equal 'admin', session[:signedin]
 
     get '/'
     refute_includes last_response.body, 'Welcome!'
@@ -178,7 +183,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Sign In'
     refute_includes last_response.body, 'Sign Out'
     assert_includes last_response.body, 'You have been signed out.'
-
+    assert_equal nil, session[:signedin]
   end
 
   def test_invalid_credentials
@@ -187,6 +192,7 @@ class CMSTest < Minitest::Test
     assert_equal 401, last_response.status
     assert_includes last_response.body, 'Invalid Credentials.'
     assert_includes last_response.body, invalid_name
+    assert_equal nil, session[:signedin]
   end
 end
 
