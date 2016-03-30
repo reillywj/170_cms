@@ -52,9 +52,39 @@ def all_documents
   @files = Dir.glob(pattern).map { |path| File.basename(path) }
 end
 
+def valid_credentials(username, password)
+  username == "username" && password == "secret"
+end
+
 get '/' do
   all_documents
   erb :index
+end
+
+get '/signin' do
+  if session[:signedin]
+    redirect '/'
+  else
+    erb :signin
+  end
+end
+
+post '/signin' do
+  @username = params[:username]
+  password = params[:password]
+  if valid_credentials(@username, password)
+    session[:signedin] = true
+    session[:message] = "Welcome!"
+    redirect '/'
+  else
+    session[:message] = "Invalid Credentials."
+    erb :signin
+  end
+end
+
+get '/signout' do
+  session.delete :signedin
+  redirect '/'
 end
 
 get "/*.txt" do

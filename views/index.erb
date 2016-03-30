@@ -15,3 +15,16 @@
 </ul>
 
 <a href="/new">New Document</a>
+
+<hr>
+
+<% if session[:signedin] %>
+  <form method="get" action="/signout">
+    <label><em>Signed in as admin.</em></label>
+    <button type="submit">Sign Out</button>
+  </form>
+<% else %>
+  <form method="get" action="/signin">
+    <button type="submit">Sign In</button>
+  </form>
+<% end %>
