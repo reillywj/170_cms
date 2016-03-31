@@ -3,6 +3,7 @@ require 'sinatra/reloader'
 require 'erubis'
 require 'redcarpet'
 require 'yaml'
+require 'bcrypt'
 
 require 'pry'
 
@@ -69,7 +70,7 @@ end
 
 def valid_admin_credentials?(username, password)
   users = administrators
-  users.has_key?(username) && users[username] == password
+  users.has_key?(username) && BCrypt::Password.new(users[username]) == password
 end
 
 def admin?

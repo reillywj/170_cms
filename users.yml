@@ -1,3 +1,7 @@
-username: password
-jerry: password
-name: password
+---
+username: !ruby/string:BCrypt::Password
+  str: "$2a$10$F1lsvtzoH/mydB4w.2TNieaqXf0g.xPBBUqhxAV0Oplgq/kdeFxVK"
+  version: 2a
+  cost: 10
+  salt: "$2a$10$F1lsvtzoH/mydB4w.2TNie"
+  checksum: aqXf0g.xPBBUqhxAV0Oplgq/kdeFxVK

@@ -14,7 +14,7 @@ class CMSTest < Minitest::Test
 
   def setup
     FileUtils.mkdir_p(data_path)
-    users = { 'username' => 'secret' }
+    users = { 'username' => BCrypt::Password.create('secret') }
     FileUtils.touch('test/users.yml')
     File.open('test/users.yml', 'w') { |f| f.write users.to_yaml }
   end
