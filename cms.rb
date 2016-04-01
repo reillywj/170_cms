@@ -63,7 +63,7 @@ def administrators
   path = if ENV['RACK_ENV'] == 'test'
     File.expand_path('../test/users.yml', __FILE__)
   else
-    File.expand_path('../data/users.yml', __FILE__)
+    File.expand_path('../users.yml', __FILE__)
   end
   YAML.load_file(path)
 end
